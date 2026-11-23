@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#b9edf0">
+<title>AquaSpace — drift, breathe, relax</title>
+<style>
+:root{--ink:#174e5b;--deep:#176d7c;--aqua:#bceff0;--glass:#f4ffffc9}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:ui-rounded,"Avenir Next",system-ui,-apple-system,sans-serif;background:radial-gradient(ellipse at 15% 0%,#fff 0,#e4fbf8 34%,transparent 66%),linear-gradient(160deg,#d8f6f4,#a9e1e7 58%,#8bcbd8);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:24px 24px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+header{text-align:center;padding:34px 16px 14px;position:relative}
+.eyebrow{font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:#468b91;font-weight:800}
+h1{font-size:clamp(2.8rem,8vw,5rem);line-height:1;margin:9px 0 8px;letter-spacing:-.07em;color:#247e89;text-shadow:0 4px 0 #ffffff80}
+header p{margin:0;color:#477f87;font-size:1.02rem}
+.wrap{width:min(100% - 28px,1020px);margin:0 auto 30px}
+.ocean{height:410px;position:relative;overflow:hidden;border-radius:32px;background:linear-gradient(180deg,#b8f1ed 0%,#66cbd0 27%,#299eb4 60%,#126d89 100%);box-shadow:0 22px 60px #176e7b35,inset 0 0 45px #eaffff99;isolation:isolate;cursor:crosshair;touch-action:pan-y}
+#water{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.sun{position:absolute;z-index:0;width:145px;height:145px;border-radius:50%;right:12%;top:34px;background:#fff9d8;box-shadow:0 0 45px 22px #fff7bd99;filter:blur(2px)}
+.water-glow{position:absolute;z-index:2;inset:0;pointer-events:none;background:linear-gradient(180deg,#ffffff26,transparent 42%,#003d5a20);mix-blend-mode:screen}
+.ocean-label{position:absolute;z-index:3;left:0;right:0;bottom:18px;text-align:center;color:#efffff;text-shadow:0 2px 8px #07546c;font-size:.94rem;pointer-events:none}
+.fish{position:absolute;z-index:2;font-size:26px;filter:drop-shadow(0 3px 3px #064f6340);animation:swim 18s linear infinite;pointer-events:none;transform:scaleX(-1)}
+.fish.one{top:43%;left:-45px}.fish.two{top:67%;left:-60px;font-size:19px;animation-duration:25s;animation-delay:-10s}
+@keyframes swim{to{transform:translateX(calc(100vw + 150px)) scaleX(-1)}}
+.bubble{position:absolute;z-index:2;bottom:-30px;border:1px solid #eaffffad;border-radius:50%;background:#eaffff22;box-shadow:inset -3px -3px 7px #fff5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-470px) translateX(20px);opacity:0}}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:17px}
+.panel{background:var(--glass);border:1px solid #fff;border-radius:25px;padding:21px;box-shadow:0 10px 28px #2c81851b;backdrop-filter:blur(12px);text-align:center}
+.panel h2{margin:0 0 8px;font-size:1.15rem;color:#267b87}
+.sub{font-size:.9rem;color:#58838a;margin:7px 0 13px}
+button,select{font:inherit}
+button{border:0;border-radius:999px;padding:12px 19px;background:linear-gradient(135deg,#3d9da6,#267c8d);color:white;font-weight:750;cursor:pointer;box-shadow:0 5px 14px #247f8b30;transition:transform .15s,filter .15s}
+button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+button:active{transform:scale(.98)}
+button.secondary{background:#e0f8f5;color:#286e79;box-shadow:none;border:1px solid #c8ece9}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f3c86b;outline-offset:3px}
+.controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.control-line{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:14px;color:#548087;font-size:.85rem}
+input[type=range]{width:min(190px,45vw);accent-color:#328c98}
+select{border:1px solid #c8e9e8;background:#f5ffff;color:#286d76;border-radius:999px;padding:9px 12px;max-width:100%}
+.breath-area{min-height:155px;display:grid;place-items:center}
+.breath{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 32% 27%,#fff 0,#c9f4ed 42%,#77cbd0 78%);box-shadow:0 0 0 10px #c9f5ef55,0 0 35px #65bec577;transform:scale(.84);transition:transform 4s ease-in-out}
+.breath.in{transform:scale(1.22);transition-duration:4s}
+.breath.out{transform:scale(.84);transition-duration:6s}
+.breath span{font-weight:800;color:#287d87;font-size:.9rem}
+.timer{font-variant-numeric:tabular-nums;font-size:.85rem;color:#52818a;margin-top:4px}
+.extras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.extra{background:#ffffffa8;border:1px solid #ffffffd9;border-radius:20px;padding:16px;text-align:center}
+.extra strong{display:block;color:#287b86;margin-bottom:5px}
+.extra p{font-size:.82rem;color:#58838a;margin:0 0 10px}
+.footer{text-align:center;color:#56828a;font-size:.82rem;padding:23px 10px 30px}
+@media(max-width:680px){.panels{grid-template-columns:1fr}.ocean{height:340px;border-radius:25px}.extras{grid-template-columns:1fr}.panel{padding:19px}.sun{width:105px;height:105px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header><div class="eyebrow">your little ocean escape</div><h1>AquaSpace</h1><p>Slow down, breathe deep, and drift for a while.</p></header>
+<main class="wrap">
+<section class="ocean" id="ocean" aria-label="Interactive animated water. Tap or click to make ripples.">
+ <div class="sun"></div><canvas id="water"></canvas><div class="water-glow"></div>
+ <div class="fish one">🐟</div><div class="fish two">🐠</div>
+ <div class="ocean-label">tap the water · watch the ripples drift ✨</div>
+</section>
+<div class="panels">
+ <section class="panel">
+  <h2>🎧 Lo-fi listening nook</h2>
+  <p class="sub">A mellow original beat made live in your browser.</p>
+  <div class="controls"><button id="musicBtn">▶ Play lo-fi</button><button class="secondary" id="muteBtn">Mute</button></div>
+  <div class="control-line"><label for="volume">Volume</label><input id="volume" type="range" min="0" max="100" value="70"><span id="volumeValue">70%</span></div>
+  <div class="control-line"><label for="soundMode">Mood</label><select id="soundMode"><option value="lofi">Cozy lo-fi</option><option value="soft">Soft piano-like tones</option><option value="rain">Lo-fi + rain-like patter</option></select></div>
+ </section>
+ <section class="panel">
+  <h2>🌿 Breathe with the tide</h2>
+  <div class="breath-area"><div class="breath" id="breath"><span id="breathText">Ready?</span></div></div>
+  <div class="timer" id="breathTimer">A gentle 4-second inhale · 6-second exhale</div>
+  <div class="controls"><button id="breathBtn">Start breathing</button><button class="secondary" id="resetBreath">Reset</button></div>
+  <p class="sub">Keep it comfortable. You can stop or breathe normally anytime.</p>
+ </section>
+</div>
+<div class="extras">
+ <section class="extra"><strong>🫧 Bubble garden</strong><p>Let tiny bubbles float by.</p><button class="secondary" id="bubbleBtn">Bubbles: on</button></section>
+ <section class="extra"><strong>🌙 Quiet mode</strong><p>Hide the extra motion for a calmer view.</p><button class="secondary" id="quietBtn">Turn on quiet mode</button></section>
+ <section class="extra"><strong>✨ Make a ripple</strong><p>Send a little wave across the water.</p><button class="secondary" id="rippleBtn">Create ripple</button></section>
+</div>
+<div class="footer">Made with a little ocean magic · AquaSpace 💙</div>
+</main>
+<script>
+(()=>{
+const ocean=document.getElementById('ocean'),canvas=document.getElementById('water'),ctx2=canvas.getContext('2d');
+let W=0,H=0,dpr=1,ripples=[],quiet=false,bubblesOn=true;
+function resize(){const r=ocean.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx2.setTransform(dpr,0,0,dpr,0,0)}
+new ResizeObserver(resize).observe(ocean);resize();
+function addRipple(x,y){ripples.push({x,y,start:performance.now(),life:1700});if(ripples.length>14)ripples.shift()}
+ocean.addEventListener('pointerdown',e=>{const r=ocean.getBoundingClientRect();addRipple(e.clientX-r.left,e.clientY-r.top)});
+document.getElementById('rippleBtn').onclick=()=>addRipple(W*(.25+Math.random()*.5),H*(.35+Math.random()*.45));
+let last=0;
+function draw(now){requestAnimationFrame(draw);if(!W||!H)return;ctx2.clearRect(0,0,W,H);
+const t=quiet?0:now*.001;
+for(let layer=0;layer<5;layer++){ctx2.beginPath();const base=H*(.38+layer*.145);for(let x=0;x<=W+4;x+=4){const y=base+Math.sin(x*.014+t*(.65+layer*.09)+layer)* (5+layer*2)+Math.sin(x*.032-t*.7+layer*2)*3; if(x===0)ctx2.moveTo(x,y);else ctx2.lineTo(x,y)}ctx2.lineTo(W,H);ctx2.lineTo(0,H);ctx2.closePath();ctx2.fillStyle=['rgba(231,255,249,.13)','rgba(205,255,251,.10)','rgba(30,142,169,.09)','rgba(6,91,126,.10)','rgba(2,67,103,.08)'][layer];ctx2.fill()}
+ctx2.save();ctx2.globalCompositeOperation='screen';
+for(let i=0;i<90;i++){let x=(i*73.7+t*(7+(i%4)*3))%(W+30)-15;let y=H*.25+((i*47)%Math.max(1,H*.65))+Math.sin(t+i)*5;let len=5+(i%8)*2;ctx2.strokeStyle=`rgba(239,255,245,${.08+(i%5)*.025})`;ctx2.lineWidth=1+(i%3)*.4;ctx2.beginPath();ctx2.moveTo(x,y);ctx2.lineTo(x+len,y+Math.sin(t+i)*2);ctx2.stroke()}
+ctx2.restore();
+ripples=ripples.filter(r=>now-r.start<r.life);for(const r of ripples){let p=(now-r.start)/r.life;ctx2.save();ctx2.translate(r.x,r.y);for(let k=0;k<3;k++){let q=Math.max(0,p-k*.12);ctx2.beginPath();ctx2.ellipse(0,0,8+q*115,4+q*37,0,0,Math.PI*2);ctx2.strokeStyle=`rgba(239,255,255,${(1-q)*.7})`;ctx2.lineWidth=2-q;ctx2.stroke()}ctx2.restore()}
+}
+requestAnimationFrame(draw);
+function bubble(){if(!bubblesOn||quiet)return;const b=document.createElement('i');b.className='bubble';const size=5+Math.random()*13;b.style.width=size+'px';b.style.height=size+'px';b.style.left=Math.random()*98+'%';b.style.animationDuration=(7+Math.random()*9)+'s';ocean.appendChild(b);setTimeout(()=>b.remove(),17000)}
+let bubbleTimer=setInterval(bubble,650);document.getElementById('bubbleBtn').onclick=e=>{bubblesOn=!bubblesOn;e.target.textContent='Bubbles: '+(bubblesOn?'on':'off')};
+document.getElementById('quietBtn').onclick=e=>{quiet=!quiet;document.querySelectorAll('.fish').forEach(x=>x.style.display=quiet?'none':'block');e.target.textContent=quiet?'Turn off quiet mode':'Turn on quiet mode';if(quiet)ocean.querySelectorAll('.bubble').forEach(x=>x.remove())};
+// Web Audio lo-fi generator. Audio begins only after the visitor presses Play.
+let audio=null,master=null,playing=false,beatTimer=null,beatIndex=0,muted=false;
+const musicBtn=document.getElementById('musicBtn'),volume=document.getElementById('volume'),volumeValue=document.getElementById('volumeValue'),muteBtn=document.getElementById('muteBtn'),mode=document.getElementById('soundMode');
+function setupAudio(){if(!audio){audio=new(window.AudioContext||window.webkitAudioContext)();master=audio.createGain();master.gain.value=.7;master.connect(audio.destination)}}
+function tone(freq,at,dur,level,wave='sine'){const o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type=wave;o.frequency.setValueAtTime(freq,at);filter.type='lowpass';filter.frequency.value=mode.value==='soft'?1500:900;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(Math.max(.0002,level),at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+dur);o.connect(filter);filter.connect(g);g.connect(master);o.start(at);o.stop(at+dur+.04)}
+function noise(at,dur,level,cutoff){const n=Math.floor(audio.sampleRate*dur),buf=audio.createBuffer(1,n,audio.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;const src=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();src.buffer=buf;f.type='lowpass';f.frequency.value=cutoff;g.gain.setValueAtTime(level,at);g.gain.exponentialRampToValueAtTime(.0001,at+dur);src.connect(f);f.connect(g);g.connect(master);src.start(at);src.stop(at+dur)}
+function scheduleBeat(){if(!playing)return;const t=audio.currentTime,sets=[[261.63,329.63,392],[220,261.63,329.63],[174.61,220,261.63],[196,246.94,293.66]],ch=sets[beatIndex%4];if(mode.value==='soft'){ch.forEach((f,i)=>tone(f,t+i*.045,1.8,.055,'sine'));tone(ch[0]*2,t+.5,1.2,.018)}else{ch.forEach((f,i)=>tone(f,t+i*.035,1.65,.035,'triangle'));tone(110,t,.14,.14,'sine');tone(164.81,t+.5,.09,.055,'triangle');tone(110,t+1,.14,.12,'sine');tone(164.81,t+1.5,.09,.05,'triangle');if(mode.value==='rain'){noise(t,1.9,.018,1200);noise(t+.95,.7,.012,1800)}}beatIndex++;beatTimer=setTimeout(scheduleBeat,2000)}
+async function startMusic(){setupAudio();if(audio.state==='suspended')await audio.resume();playing=true;musicBtn.textContent='Ⅱ Pause lo-fi';scheduleBeat()}
+musicBtn.onclick=async()=>{if(!playing){await startMusic()}else{playing=false;clearTimeout(beatTimer);await audio.suspend();musicBtn.textContent='▶ Play lo-fi'}};
+function setVolume(){const v=Number(volume.value)/100;volumeValue.textContent=volume.value+'%';if(master)master.gain.setTargetAtTime(muted?0:v,audio.currentTime,.04)}
+volume.oninput=setVolume;muteBtn.onclick=()=>{muted=!muted;muteBtn.textContent=muted?'Unmute':'Mute';setVolume()};mode.onchange=()=>{if(playing){clearTimeout(beatTimer);scheduleBeat()}};
+// Comfortable 4-in / 6-out guided breathing.
+let breathing=false,phase='out',breathTimeout=null,remaining=0,phaseEnd=0;
+const circle=document.getElementById('breath'),breathText=document.getElementById('breathText'),breathTimer=document.getElementById('breathTimer'),breathBtn=document.getElementById('breathBtn');
+function breathPhase(next){phase=next;const seconds=next==='in'?4:6;circle.classList.toggle('in',next==='in');circle.classList.toggle('out',next==='out');breathText.textContent=next==='in'?'Breathe in':'Breathe out';phaseEnd=Date.now()+seconds*1000;clearInterval(breathTimeout);breathTimeout=setInterval(()=>{const left=Math.max(0,Math.ceil((phaseEnd-Date.now())/1000));breathTimer.textContent=(next==='in'?'Breathe in gently · ':'Breathe out slowly · ')+left+'s';if(left<=0)breathPhase(next==='in'?'out':'in')},150)}
+breathBtn.onclick=()=>{if(!breathing){breathing=true;breathBtn.textContent='Pause breathing';breathPhase('in')}else{breathing=false;clearInterval(breathTimeout);circle.classList.remove('in','out');breathText.textContent='Paused';breathTimer.textContent='Take a normal breath whenever you like';breathBtn.textContent='Resume breathing'}};
+document.getElementById('resetBreath').onclick=()=>{breathing=false;clearInterval(breathTimeout);circle.classList.remove('in','out');breathText.textContent='Ready?';breathTimer.textContent='A gentle 4-second inhale · 6-second exhale';breathBtn.textContent='Start breathing'};
+})();
+</script>
+</body>
+</html>
